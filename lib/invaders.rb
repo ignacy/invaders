@@ -6,6 +6,27 @@ loader.collapse("#{__dir__}/invaders/data")
 loader.setup
 
 module Invaders
-  class Error < StandardError; end
+  KNOWN_INVADERS = [
+    Invader.new("--o-----o--
+---o---o---
+--ooooooo--
+-oo-ooo-oo-
+ooooooooooo
+o-ooooooo-o
+o-o-----o-o
+---oo-oo---"),
+    Invader.new("
+---oo---
+--oooo--
+-oooooo-
+oo-oo-oo
+oooooooo
+--o--o--
+-o-oo-o-
+o-o--o-o")
+  ]
+
+  RADAR_DATA = Radar.new(File.read('radar_data'))
 end
+
 loader.eager_load
