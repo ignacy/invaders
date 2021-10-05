@@ -33,7 +33,22 @@ module Invaders
       (x + 1) - width >= 0 && (y + 1) - height >= 0
     end
 
+    def matches?(invader)
+      return false unless invader.width == width
+      return false unless invader.height == height
+
+      invader.rows.join("\n") == rows.join("\n")
+    end
+
     private
+
+    def rows
+      return [] unless valid?
+
+      radar_reading.rows[(y + 1 - height)..y].map do |row|
+        row[(x + 1 - width)..x]
+      end
+    end
 
     attr_reader :radar_reading, :x, :y, :width, :height
   end
