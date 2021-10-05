@@ -5,12 +5,13 @@ module Invaders
   class RadarSlice
     MINIMAL_MATCH_LEVEL = 0.8
 
-    def initialize(radar_reading:, x:, y:, width:, height:)
+    def initialize(radar_reading:, x:, y:, width:, height:, match_level_computer: MatchStrategies::Lexical)
       @radar_reading = radar_reading
       @x = x
       @y = y
       @width = width
       @height = height
+      @match_level_computer = match_level_computer
     end
 
     # A slice is valid when it is contained in the RadarReading.
@@ -35,23 +36,13 @@ module Invaders
       (x + 1) - width >= 0 && (y + 1) - height >= 0
     end
 
-    def match_level(invader)
-      matches = 0
-
-      invader.rows_string.chars.each_with_index do |c, index|
-        matches += 1 if rows_string[index] == c
-      end
-
-      matches.to_f / invader.rows_string.size
-    end
-
     def matches?(invader)
       return false unless valid?
       return false unless invader.width == width
       return false unless invader.height == height
 
       match_level(invader) >= MINIMAL_MATCH_LEVEL
-   end
+    end
 
     # Returns the view of the RadarReading rows as narrowed by this slice
     def rows
@@ -60,12 +51,16 @@ module Invaders
       end
     end
 
+    def match_level(invader)
+      match_level_computer.new(invader.rows_string, rows_string).compute
+    end
+
     private
 
     def rows_string
-      @rows_string ||= rows.join("")
+      @rows_string ||= rows.join
     end
 
-    attr_reader :radar_reading, :x, :y, :width, :height
+    attr_reader :radar_reading, :x, :y, :width, :height, :match_level_computer
   end
 end

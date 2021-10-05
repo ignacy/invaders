@@ -17,7 +17,7 @@ module Invaders
     end
 
     def rows_string
-      @rows_string ||= rows.join("")
+      @rows_string ||= rows.join
     end
   end
 end

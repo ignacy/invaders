@@ -19,14 +19,14 @@ module Invaders
 
             next unless slice.matches?(invader)
 
-            puts "Found possible invader! Match level: #{slice.match_level(invader)}"
+            puts format('Found possible invader! Match level: %.4f', slice.match_level(invader))
             puts "== Invader: ==\n"
             puts invader.rows
             puts "== Slice: ==\n"
 
             puts slice.rows
 
-            puts "========"
+            puts '========'
           end
         end
       end
