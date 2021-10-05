@@ -24,9 +24,9 @@ oooooooo
 --o--o--
 -o-oo-o-
 o-o--o-o")
-  ]
+  ].freeze
 
-  RADAR_DATA = Radar.new(File.read('radar_data'))
+  RADAR_DATA = RadarReading.new(File.read('radar_data'))
 end
 
 loader.eager_load

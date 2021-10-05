@@ -3,15 +3,17 @@ module Invaders
     def initialize(string)
       raise ArgumentError, 'string cannot be empty' if string.nil? || string == ''
 
-      @string = string
+      @rows = string.split("\n")
     end
 
-    def to_a
-      string.split("\n")
+    attr_reader :rows
+
+    def width
+      @width ||= rows.first.size
     end
 
-    private
-
-    attr_reader :string
+    def height
+      @height ||= rows.size
+    end
   end
 end
