@@ -6,6 +6,9 @@ module Invaders
         @b = b
       end
 
+      # For lexical match we count how many characters in a match those in b (on
+      # the same positions) and we compare that to the total number of
+      # characters in a
       def compute
         matches_count.to_f / a.size
       end
