@@ -4,8 +4,7 @@ module Invaders
     def initialize(data)
       raise ArgumentError, 'data cannot be empty' if data.nil? || data == ''
 
-      @data = data
-      @rows = data.split("\n")
+      @rows = data.chomp.split("\n")
     end
 
     attr_reader :rows

@@ -17,9 +17,16 @@ module Invaders
               height: invader.height
             )
 
-            next unless slice.valid?
+            next unless slice.matches?(invader)
 
-            puts "Found! #{slice}, #{invader.rows}" if slice.matches?(invader)
+            puts "Found possible invader! Match level: #{slice.match_level(invader)}"
+            puts "== Invader: ==\n"
+            puts invader.rows
+            puts "== Slice: ==\n"
+
+            puts slice.rows
+
+            puts "========"
           end
         end
       end

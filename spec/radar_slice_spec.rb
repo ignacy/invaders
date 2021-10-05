@@ -72,5 +72,10 @@ RSpec.describe ::Invaders::RadarSlice do
     it 'knows that it matched the invader' do
       expect(slice.matches?(invader)).to eq(true)
     end
+
+    it 'knows that it does not match the invader' do
+      invader2 = ::Invaders::Invader.new("xx\nyy")
+      expect(slice.matches?(invader2)).to eq(false)
+    end
   end
 end

@@ -3,6 +3,8 @@ module Invaders
   # Note: a slice might not be valid, it can for example be larger than
   # what the Radar reading represents.
   class RadarSlice
+    MINIMAL_MATCH_LEVEL = 0.8
+
     def initialize(radar_reading:, x:, y:, width:, height:)
       @radar_reading = radar_reading
       @x = x
@@ -33,21 +35,35 @@ module Invaders
       (x + 1) - width >= 0 && (y + 1) - height >= 0
     end
 
+    def match_level(invader)
+      matches = 0
+
+      invader.rows_string.chars.each_with_index do |c, index|
+        matches += 1 if rows_string[index] == c
+      end
+
+      matches.to_f / invader.rows_string.size
+    end
+
     def matches?(invader)
+      return false unless valid?
       return false unless invader.width == width
       return false unless invader.height == height
 
-      invader.rows.join("\n") == rows.join("\n")
+      match_level(invader) >= MINIMAL_MATCH_LEVEL
+   end
+
+    # Returns the view of the RadarReading rows as narrowed by this slice
+    def rows
+      @rows ||= radar_reading.rows[(y + 1 - height)..y].map do |row|
+        row[(x + 1 - width)..x]
+      end
     end
 
     private
 
-    def rows
-      return [] unless valid?
-
-      radar_reading.rows[(y + 1 - height)..y].map do |row|
-        row[(x + 1 - width)..x]
-      end
+    def rows_string
+      @rows_string ||= rows.join("")
     end
 
     attr_reader :radar_reading, :x, :y, :width, :height

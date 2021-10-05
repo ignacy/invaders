@@ -15,8 +15,7 @@ ooooooooooo
 o-ooooooo-o
 o-o-----o-o
 ---oo-oo---"),
-    Invader.new("
----oo---
+    Invader.new("---oo---
 --oooo--
 -oooooo-
 oo-oo-oo
