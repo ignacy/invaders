@@ -2,14 +2,14 @@
 
 To run the program:
 
-```
-$> bin/find_invaders
+```sh
+> bin/find_invaders
 ```
 
 To run the specs:
 
-``` 
-$> rspec spec
+```sh
+> rspec spec
 ```
 
 ## Assumptions
@@ -17,13 +17,13 @@ $> rspec spec
 I had to make some assumptions about requirements/effort, here's my list:
 
 * Ignore rotation for invaders and the radar reading, everything is matched as given
-* Invaders ar hardcoded as `Invaders::KNOWN_INVADERS`
-* Radar reading can be changed in toplevel `radar_data` file
+* Invaders ar hardcoded as `Invaders::KNOWN_INVADERS` and new ones can be added easily [here](https://github.com/ignacy/invaders/blob/1764316d3c02883557000cefce87e70b05f44d65/lib/invaders.rb#L9-L26)
+* Radar reading can be changed in toplevel [radar_data]( https://github.com/ignacy/invaders/blob/1764316d3c02883557000cefce87e70b05f44d65/radar_data) file
 
 ## Matching heuristic
 
 Matching exact shapes will probably return bad results because of the possible noise.
-For that reason I implemented `MatchStrategies` The one used by the program computes
+For that reason I implemented (MatchStrategies)[https://github.com/ignacy/invaders/tree/main/lib/invaders/match_strategies] The one used by the program computes
 the ratio of exact positional matches to all tiles for each invader.
 
 For example:
