@@ -1,6 +1,6 @@
 module Invaders
   class Invader
-    SENSIBLE_COLORS = [:red, :green, :blue, :light_blue]
+    SENSIBLE_COLORS = %i[red green blue light_blue].freeze
 
     def initialize(string)
       raise ArgumentError, 'string cannot be empty' if string.nil? || string == ''

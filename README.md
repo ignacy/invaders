@@ -42,3 +42,17 @@ o-o-----o-o    =>    o-o-----o-o
 
 Confidence level: 0.875
 ```
+
+`MatchStrategy` is expected to return match level (0-1) in the runner (`Invaders::Find`) I hardcoded
+two confidence levels to show that with the lowel level we can find multiple suspectable regions.
+
+## Example output
+
+* High probability of a match (high threshold)
+![High probability matches](screens/red.png)
+
+* Low probability of a match
+![High probability matches](screens/green.png)
+
+* List of match => invader pairs
+![High probability matches](screens/slicetoinvader.png)

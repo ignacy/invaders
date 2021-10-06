@@ -2,21 +2,22 @@ require 'forwardable'
 
 module Invaders
   class PotentialMatch
-    MINIMAL_MATCH_LEVEL = 0.8
+    THRESHOLD = 0.8
     extend Forwardable
     def_delegators :@lower_right_point, :x, :y
     def_delegators :@invader, :width, :height
 
-    def initialize(radar_reading:, invader:, lower_right_point:, match_level_computer: MatchStrategies::Lexical)
+    def initialize(radar_reading:, invader:, lower_right_point:, match_level_computer: MatchStrategies::Lexical, threshold: THRESHOLD)
       @radar_reading = radar_reading
       @invader = invader
       @lower_right_point = lower_right_point
       @match_level_computer = match_level_computer
+      @threshold = threshold
     end
 
     attr_reader :invader
 
-    # A slice is valid when it is contained in the RadarReading.
+    # A potential match is valid when it is contained in the RadarReading.
     # For example if the Radar gives the following reading:
     # ~~~
     # abcd
@@ -24,13 +25,13 @@ module Invaders
     # abcd
     # ~~
     #
-    # Slice x = 1, y = 1, width = 2, height = 2 would be valid and represent:
+    # Potential match x = 1, y = 1, width = 2, height = 2 would be valid and represent:
     # ~~
     # ab
     # ab
     # ~~
     #
-    # Slice x = 1, y = 1, widht = 2, height = 3 would not be valid
+    # Potential match x = 1, y = 1, widht = 2, height = 3 would not be valid
     def valid?
       return false if x >= radar_reading.width || x.negative?
       return false if y >= radar_reading.height || y.negative?
@@ -43,10 +44,10 @@ module Invaders
       return false unless invader.width == width
       return false unless invader.height == height
 
-      match_level >= MINIMAL_MATCH_LEVEL
+      match_level >= threshold
     end
 
-    # Returns the view of the RadarReading rows as narrowed by this slice
+    # Returns the view of the RadarReading rows as narrowed by this potential match
     def rows
       @rows ||= radar_reading.rows[(y + 1 - height)..y].map do |row|
         row[(x + 1 - width)..x]
@@ -57,11 +58,9 @@ module Invaders
       match_level_computer.new(invader.rows_string, rows_string).compute
     end
 
+    # Given a Point it checks if it is within bounds of the potential match
     def inside?(point)
-      point.x >= (x - width) &&
-        point.x <= x &&
-        point.y >= (y - height) &&
-        point.y <= y
+      point.x >= (x - width) && point.x <= x && point.y >= (y - height) && point.y <= y
     end
 
     private
@@ -70,6 +69,6 @@ module Invaders
       @rows_string ||= rows.join
     end
 
-    attr_reader :radar_reading, :match_level_computer
+    attr_reader :radar_reading, :match_level_computer, :threshold
   end
 end

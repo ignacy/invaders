@@ -8,9 +8,9 @@ module Invaders
 
       def to_s
         (
-          [ "Slice    =>    Invader" ] +
+          ['Slice    =>    Invader'] +
           rows +
-          [ "Confidence level: #{radar_slice.match_level}\n\n" ]
+          ["Confidence level: #{radar_slice.match_level}\n\n"]
         ).join("\n")
       end
 
