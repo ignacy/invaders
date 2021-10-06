@@ -27,7 +27,14 @@ o-o--o-o")
 
   RADAR_DATA = RadarReading.new(File.read('radar_data'))
 
-  Point = Struct.new(:x, :y)
+  Point = Struct.new(:x, :y) do
+    def inside_area?(bottom_x, bottom_y, width, height)
+      x >= (bottom_x - width) &&
+        x <= bottom_x &&
+        y >= (bottom_y - height) &&
+        y <= bottom_y
+    end
+  end
 end
 
 loader.eager_load

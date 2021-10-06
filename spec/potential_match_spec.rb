@@ -62,7 +62,7 @@ RSpec.describe ::Invaders::PotentialMatch do
         invader: invader
       )
 
-      expect(potential_match.matches?).to eq(true)
+      expect(potential_match).to be_good_enough
     end
 
     it 'knows that it does not match the invader' do
@@ -72,7 +72,7 @@ RSpec.describe ::Invaders::PotentialMatch do
         lower_right_point: ::Invaders::Point.new(1, 1),
         invader: invader
       )
-      expect(potential_match.matches?).to eq(false)
+      expect(potential_match).to_not be_good_enough
     end
   end
 end

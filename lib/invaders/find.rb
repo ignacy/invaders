@@ -31,14 +31,11 @@ module Invaders
               threshold: threshold
             )
 
-            next unless potential_match.matches?
+            next unless potential_match.good_enough?
 
             matches << potential_match
 
-            puts Presenters::InvaderMatchPresenter.new(
-              potential_match,
-              invader
-            )
+            puts Presenters::InvaderMatchPresenter.new(potential_match, invader)
           end
         end
       end
@@ -54,8 +51,7 @@ module Invaders
       print "Matches with score >= #{threshold}\n"
       (0...radar_reading.height).each do |y|
         (0...radar_reading.width).each do |x|
-          point = Point.new(x, y)
-          match = matches.detect { |potential_match| potential_match.inside?(point) }
+          match = matches.detect { |m| Point.new(x, y).inside_area?(m.x, m.y, m.width, m.height) }
           if match
             print radar_reading.rows[y][x].colorize(color)
           else

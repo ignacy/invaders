@@ -7,11 +7,11 @@ module Invaders
     def_delegators :@lower_right_point, :x, :y
     def_delegators :@invader, :width, :height
 
-    def initialize(radar_reading:, invader:, lower_right_point:, match_level_computer: MatchStrategies::Lexical, threshold: THRESHOLD)
+    def initialize(radar_reading:, invader:, lower_right_point:, match_strategy: MatchStrategies::Lexical, threshold: THRESHOLD)
       @radar_reading = radar_reading
       @invader = invader
       @lower_right_point = lower_right_point
-      @match_level_computer = match_level_computer
+      @match_strategy = match_strategy
       @threshold = threshold
     end
 
@@ -39,10 +39,8 @@ module Invaders
       (x + 1) - width >= 0 && (y + 1) - height >= 0
     end
 
-    def matches?
+    def good_enough?
       return false unless valid?
-      return false unless invader.width == width
-      return false unless invader.height == height
 
       match_level >= threshold
     end
@@ -55,12 +53,7 @@ module Invaders
     end
 
     def match_level
-      match_level_computer.new(invader.rows_string, rows_string).compute
-    end
-
-    # Given a Point it checks if it is within bounds of the potential match
-    def inside?(point)
-      point.x >= (x - width) && point.x <= x && point.y >= (y - height) && point.y <= y
+      @match_level ||= match_strategy.new(invader.rows_string, rows_string).compute
     end
 
     private
@@ -69,6 +62,6 @@ module Invaders
       @rows_string ||= rows.join
     end
 
-    attr_reader :radar_reading, :match_level_computer, :threshold
+    attr_reader :radar_reading, :match_strategy, :threshold
   end
 end

@@ -24,7 +24,7 @@ I had to make some assumptions about requirements/effort, here's my list:
 
 Matching exact shapes will probably return bad results because of the possible noise.
 For that reason I implemented `MatchStrategies` The one used by the program computes
-the ratio of exact matches to all tiles for each invader.
+the ratio of exact positional matches to all tiles for each invader.
 
 For example:
 
