@@ -13,20 +13,18 @@ module Invaders
       invaders.each do |invader|
         (0...radar_reading.width).each do |x|
           (0...radar_reading.height).each do |y|
-            slice = RadarSlice.new(
+            slice = PotentialMatch.new(
               radar_reading: radar_reading,
               lower_right_point: Point.new(x, y),
-              width: invader.width,
-              height: invader.height
+              invader: invader
             )
 
-            if slice.matches?(invader)
+            if slice.matches?
               matching_slices << slice
 
               puts Presenters::InvaderMatchPresenter.new(
                      slice,
-                     invader,
-                     slice.match_level(invader)
+                     invader
                    )
             end
           end

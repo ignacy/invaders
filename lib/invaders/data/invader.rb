@@ -1,12 +1,15 @@
 module Invaders
   class Invader
+    SENSIBLE_COLORS = [:red, :green, :blue, :light_blue]
+
     def initialize(string)
       raise ArgumentError, 'string cannot be empty' if string.nil? || string == ''
 
       @rows = string.chomp.split("\n")
+      @color = SENSIBLE_COLORS.sample
     end
 
-    attr_reader :rows
+    attr_reader :rows, :color
 
     def width
       @width ||= rows.first.size

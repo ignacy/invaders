@@ -1,17 +1,16 @@
 module Invaders
   module Presenters
     class InvaderMatchPresenter
-      def initialize(radar_slice, invader, confidence_level = "XX")
+      def initialize(radar_slice, invader)
         @radar_slice = radar_slice
         @invader = invader
-        @confidence_level = confidence_level
       end
 
       def to_s
         (
           [ "Slice    =>    Invader" ] +
           rows +
-          [ "Confidence level: #{confidence_level}\n\n" ]
+          [ "Confidence level: #{radar_slice.match_level}\n\n" ]
         ).join("\n")
       end
 

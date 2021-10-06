@@ -1,21 +1,20 @@
 require 'forwardable'
 
 module Invaders
-  # Given a Radar reading this class represents a slice of that reading.
-  # Note: a slice might not be valid, it can for example be larger than
-  # what the Radar reading represents.
-  class RadarSlice
-    MINIMAL_MATCH_LEVEL = 0.6
+  class PotentialMatch
+    MINIMAL_MATCH_LEVEL = 0.8
     extend Forwardable
     def_delegators :@lower_right_point, :x, :y
+    def_delegators :@invader, :width, :height
 
-    def initialize(radar_reading:, lower_right_point:, width:, height:, match_level_computer: MatchStrategies::Lexical)
+    def initialize(radar_reading:, invader:, lower_right_point:, match_level_computer: MatchStrategies::Lexical)
       @radar_reading = radar_reading
+      @invader = invader
       @lower_right_point = lower_right_point
-      @width = width
-      @height = height
       @match_level_computer = match_level_computer
     end
+
+    attr_reader :invader
 
     # A slice is valid when it is contained in the RadarReading.
     # For example if the Radar gives the following reading:
@@ -39,12 +38,12 @@ module Invaders
       (x + 1) - width >= 0 && (y + 1) - height >= 0
     end
 
-    def matches?(invader)
+    def matches?
       return false unless valid?
       return false unless invader.width == width
       return false unless invader.height == height
 
-      match_level(invader) >= MINIMAL_MATCH_LEVEL
+      match_level >= MINIMAL_MATCH_LEVEL
     end
 
     # Returns the view of the RadarReading rows as narrowed by this slice
@@ -54,7 +53,7 @@ module Invaders
       end
     end
 
-    def match_level(invader)
+    def match_level
       match_level_computer.new(invader.rows_string, rows_string).compute
     end
 
@@ -71,6 +70,6 @@ module Invaders
       @rows_string ||= rows.join
     end
 
-    attr_reader :radar_reading, :width, :height, :match_level_computer
+    attr_reader :radar_reading, :match_level_computer
   end
 end
