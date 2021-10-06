@@ -11,8 +11,7 @@ RSpec.describe ::Invaders::RadarSlice do
     it 'knows when slice does not fit in the Radar' do
       slice = described_class.new(
         radar_reading: radar,
-        x: 1,
-        y: 1,
+        lower_right_point: ::Invaders::Point.new(1, 1),
         width: 3,
         height: 2
       )
@@ -23,8 +22,7 @@ RSpec.describe ::Invaders::RadarSlice do
     it 'knows that a slice fits the Radar' do
       slice = described_class.new(
         radar_reading: radar,
-        x: 3,
-        y: 3,
+        lower_right_point: ::Invaders::Point.new(3, 3),
         width: 2,
         height: 2
       )
@@ -35,8 +33,7 @@ RSpec.describe ::Invaders::RadarSlice do
     it 'knows when x is outside of the bounds of the Radar Reading' do
       slice = described_class.new(
         radar_reading: radar,
-        x: 1000,
-        y: 3,
+        lower_right_point: ::Invaders::Point.new(1000, 3),
         width: 2,
         height: 2
       )
@@ -47,8 +44,7 @@ RSpec.describe ::Invaders::RadarSlice do
     it 'knows when y is outside of the bounds of the Radar Reading' do
       slice = described_class.new(
         radar_reading: radar,
-        x: 3,
-        y: 100_000,
+        lower_right_point: ::Invaders::Point.new(3, 1000),
         width: 2,
         height: 2
       )
@@ -62,8 +58,7 @@ RSpec.describe ::Invaders::RadarSlice do
     let(:slice) do
       described_class.new(
         radar_reading: radar,
-        x: 1,
-        y: 1,
+        lower_right_point: ::Invaders::Point.new(1, 1),
         width: 2,
         height: 2
       )

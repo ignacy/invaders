@@ -26,6 +26,8 @@ o-o--o-o")
   ].freeze
 
   RADAR_DATA = RadarReading.new(File.read('radar_data'))
+
+  Point = Struct.new(:x, :y)
 end
 
 loader.eager_load

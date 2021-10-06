@@ -1,3 +1,5 @@
+require 'colorize'
+
 module Invaders
   class Find
     def initialize
@@ -6,29 +8,42 @@ module Invaders
     end
 
     def call
+      matching_slices = []
+
       invaders.each do |invader|
         (0...radar_reading.width).each do |x|
-          (0..radar_reading.height).each do |y|
+          (0...radar_reading.height).each do |y|
             slice = RadarSlice.new(
               radar_reading: radar_reading,
-              x: x,
-              y: y,
+              lower_right_point: Point.new(x, y),
               width: invader.width,
               height: invader.height
             )
 
-            next unless slice.matches?(invader)
+            if slice.matches?(invader)
+              matching_slices << slice
 
-            puts format('Found possible invader! Match level: %.4f', slice.match_level(invader))
-            puts "== Invader: ==\n"
-            puts invader.rows
-            puts "== Slice: ==\n"
-
-            puts slice.rows
-
-            puts '========'
+              puts Presenters::InvaderMatchPresenter.new(
+                     slice,
+                     invader,
+                     slice.match_level(invader)
+                   )
+            end
           end
         end
+      end
+
+      (0...radar_reading.height).each do |y|
+        (0...radar_reading.width).each do |x|
+          point = Point.new(x, y)
+          matching_slice = matching_slices.detect { |slice| slice.inside?(point) }
+          if matching_slice
+            print radar_reading.rows[y][x].colorize(:green)
+          else
+            print radar_reading.rows[y][x]
+          end
+        end
+        puts ""
       end
     end
 

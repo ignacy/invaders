@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'colorize'
 gem 'pry'
 gem 'rspec', '~> 3.0'
 gem 'rubocop', '~> 1.7'
